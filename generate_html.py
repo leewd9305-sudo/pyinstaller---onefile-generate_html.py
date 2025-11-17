@@ -6,7 +6,8 @@ from datetime import datetime
 import shutil
 from tkinter import Tk, filedialog, messagebox
 import unicodedata
-from openpyxl import load_workbook   # 🔥 추가
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
 
 
 # ==============================
@@ -48,14 +49,40 @@ def sanitize_filename(name: str) -> str:
 
 
 # ==============================
-# 📘 엑셀 자동 셀 너비 조정
+# 📌 원본 엑셀에서 노란색 셀이 포함된 row 찾기
 # ==============================
-def save_excel_autowidth(df, path):
-    df.to_excel(path, index=False, engine='openpyxl')  # xlsx 파일로 저장
+YELLOW_HEX = ["FFFFFF00", "FFFF00"]
+
+def find_changed_rows(excel_path, sheet_name):
+    wb = load_workbook(excel_path, data_only=True)
+    ws = wb[sheet_name]
+
+    changed_rows = set()
+
+    for row in ws.iter_rows(min_row=3):  
+        for cell in row:
+            fill = cell.fill
+            if fill and fill.start_color and fill.start_color.rgb:
+                rgb = fill.start_color.rgb.upper()
+                if rgb in YELLOW_HEX:
+                    changed_rows.add(cell.row)
+                    break
+
+    return changed_rows
+
+
+# ==============================
+# 📘 엑셀 자동 셀 너비 조정 + 변경 row 노란색 강조
+# ==============================
+def save_excel_with_highlight(df, path, changed_rows):
+    df.to_excel(path, index=False, engine='openpyxl')
 
     wb = load_workbook(path)
     ws = wb.active
 
+    yellow_fill = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
+
+    # 셀 너비 자동 조정
     for col in ws.columns:
         max_length = 0
         col_letter = col[0].column_letter
@@ -63,12 +90,18 @@ def save_excel_autowidth(df, path):
         for cell in col:
             try:
                 cell_length = len(str(cell.value))
-                if cell_length > max_length:
-                    max_length = cell_length
+                max_length = max(max_length, cell_length)
             except:
                 pass
 
         ws.column_dimensions[col_letter].width = (max_length + 2) * 1.2
+
+    # row 강조 (원본 row 번호 -2 → 로그 row 번호)
+    for src_row in changed_rows:
+        log_row = src_row - 2  
+        if log_row >= 2:
+            for cell in ws[log_row]:
+                cell.fill = yellow_fill
 
     wb.save(path)
 
@@ -304,6 +337,9 @@ if __name__ == "__main__":
 
     LOG_TIMESTAMP = datetime.now().strftime('%Y%m%d_%H%M%S')
 
+    # 🔥 변경된 row 기록용 딕셔너리
+    changed_rows_map = {}
+
     try:
 
         log_records = []
@@ -314,15 +350,19 @@ if __name__ == "__main__":
         valid_sheets = [s.strip() for s in all_sheets if "파일명 리스트" in s]
 
         for sheet in valid_sheets:
+            # 원본 엑셀에서 변경 row 찾기
+            changed_rows_map[sheet] = find_changed_rows(EXCEL_FILE, sheet)
+
             generate_html_for_sheet(EXCEL_FILE, sheet, OUTPUT_DIR, log_records)
 
         # 로그 생성
         if log_records:
             log_df = pd.DataFrame(log_records)
 
-            # 저장 경로를 xlsx로 변경
             LOG_XLSX = os.path.join(OUTPUT_DIR, f"html_log_{LOG_TIMESTAMP}.xlsx")
-            save_excel_autowidth(log_df, LOG_XLSX)
+            save_excel_with_highlight(log_df, LOG_XLSX, 
+                changed_rows_map.get(valid_sheets[0], set())
+            )
 
             mono_df = log_df[log_df["시트명"].str.contains("단색", na=False)]
             spot_df = log_df[log_df["시트명"].str.contains("별색", na=False)]
@@ -332,13 +372,22 @@ if __name__ == "__main__":
             ]
 
             if not mono_df.empty:
-                save_excel_autowidth(mono_df, os.path.join(OUTPUT_DIR, f"log_mono_{LOG_TIMESTAMP}.xlsx"))
+                save_excel_with_highlight(
+                    mono_df, os.path.join(OUTPUT_DIR, f"log_mono_{LOG_TIMESTAMP}.xlsx"),
+                    changed_rows_map.get("파일명 리스트(단색)", set())
+                )
 
             if not spot_df.empty:
-                save_excel_autowidth(spot_df, os.path.join(OUTPUT_DIR, f"log_spot_{LOG_TIMESTAMP}.xlsx"))
+                save_excel_with_highlight(
+                    spot_df, os.path.join(OUTPUT_DIR, f"log_spot_{LOG_TIMESTAMP}.xlsx"),
+                    changed_rows_map.get("파일명 리스트(별색)", set())
+                )
 
             if not normal_df.empty:
-                save_excel_autowidth(normal_df, os.path.join(OUTPUT_DIR, f"log_normal_{LOG_TIMESTAMP}.xlsx"))
+                save_excel_with_highlight(
+                    normal_df, os.path.join(OUTPUT_DIR, f"log_normal_{LOG_TIMESTAMP}.xlsx"),
+                    changed_rows_map.get("파일명 리스트", set())
+                )
 
         generate_combined_html(OUTPUT_DIR)
 
