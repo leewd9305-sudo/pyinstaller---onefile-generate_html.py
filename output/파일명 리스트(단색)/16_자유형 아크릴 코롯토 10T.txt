@@ -1,0 +1,120 @@
+
+        <div style="width:100%; max-width:720px; margin:0 auto; padding:0 16px;
+        display:flex; flex-direction:column; align-items:center; gap:30px;
+        position:relative; box-sizing:border-box; text-align:center;">
+            <div style="background-color:#CCE6FF; border-radius:12px; box-sizing:border-box;
+            width:100%; height:fit-content; display:flex; flex-direction:column;
+            align-items:center; padding-bottom:30px; position:relative;">
+                <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/test/단색_툴팁.png" alt="단색 제작가이드"
+                    style="position:absolute; top:0; left:50%; transform:translateX(-50%);
+                    width:130px; height:auto; z-index:10;">
+                <h2 style="margin-top:150px; font-size:20px; font-weight:600;">자유형 아크릴 코롯토 10T</h2>
+        
+                <div style="margin-top:55px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/00_A.jpg?ver=1"
+                        alt="자유형 아크릴 코롯토 10T 이미지 1"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/01_B.jpg?ver=2"
+                        alt="자유형 아크릴 코롯토 10T 이미지 2"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/02_B.jpg?ver=3"
+                        alt="자유형 아크릴 코롯토 10T 이미지 3"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/03_A.jpg?ver=4"
+                        alt="자유형 아크릴 코롯토 10T 이미지 4"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/04_A.jpg?ver=5"
+                        alt="자유형 아크릴 코롯토 10T 이미지 5"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/05_A.jpg?ver=6"
+                        alt="자유형 아크릴 코롯토 10T 이미지 6"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/07_A.jpg?ver=7"
+                        alt="자유형 아크릴 코롯토 10T 이미지 7"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/09_A.jpg?ver=8"
+                        alt="자유형 아크릴 코롯토 10T 이미지 8"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/10_A.jpg?ver=9"
+                        alt="자유형 아크릴 코롯토 10T 이미지 9"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/11_A.jpg?ver=10"
+                        alt="자유형 아크릴 코롯토 10T 이미지 10"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/19_A.jpg?ver=11"
+                        alt="자유형 아크릴 코롯토 10T 이미지 11"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/24_A.jpg?ver=12"
+                        alt="자유형 아크릴 코롯토 10T 이미지 12"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/26_A.jpg?ver=13"
+                        alt="자유형 아크릴 코롯토 10T 이미지 13"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/33_A.jpg?ver=14"
+                        alt="자유형 아크릴 코롯토 10T 이미지 14"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/34_A.jpg?ver=15"
+                        alt="자유형 아크릴 코롯토 10T 이미지 15"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+            </div>
+        </div>
+        
