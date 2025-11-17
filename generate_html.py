@@ -6,6 +6,7 @@ from datetime import datetime
 import shutil
 from tkinter import Tk, filedialog, messagebox
 import unicodedata
+from openpyxl import load_workbook   # 🔥 추가
 
 
 # ==============================
@@ -44,6 +45,32 @@ def select_excel_file():
 def sanitize_filename(name: str) -> str:
     name = re.sub(r'[<>:"/\\|?*]', "_", str(name))
     return name.strip()
+
+
+# ==============================
+# 📘 엑셀 자동 셀 너비 조정
+# ==============================
+def save_excel_autowidth(df, path):
+    df.to_excel(path, index=False, engine='openpyxl')  # xlsx 파일로 저장
+
+    wb = load_workbook(path)
+    ws = wb.active
+
+    for col in ws.columns:
+        max_length = 0
+        col_letter = col[0].column_letter
+
+        for cell in col:
+            try:
+                cell_length = len(str(cell.value))
+                if cell_length > max_length:
+                    max_length = cell_length
+            except:
+                pass
+
+        ws.column_dimensions[col_letter].width = (max_length + 2) * 1.2
+
+    wb.save(path)
 
 
 # ==============================
@@ -99,11 +126,6 @@ def generate_html_for_sheet(excel_file_path: str, sheet_name: str, output_dir: s
         safe_name = sanitize_filename(product_name)
         output_path = os.path.join(sheet_output_dir, f"{seq_str}_{safe_name}.txt")
 
-        # ==========================================
-        # ✨ 수정된 핵심
-        # 툴팁 위치를 박스 안쪽(top:15px)
-        # 제목 간격 margin-top:75px
-        # ==========================================
         html = f"""
         <div style="width:100%; max-width:720px; margin:0 auto; padding:0 16px;
         display:flex; flex-direction:column; align-items:center; gap:20px;">
@@ -280,9 +302,7 @@ if __name__ == "__main__":
     except:
         sys.exit(1)
 
-    LOG_FILE = os.path.join(
-        OUTPUT_DIR, f"html_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
-    )
+    LOG_TIMESTAMP = datetime.now().strftime('%Y%m%d_%H%M%S')
 
     try:
 
@@ -299,9 +319,10 @@ if __name__ == "__main__":
         # 로그 생성
         if log_records:
             log_df = pd.DataFrame(log_records)
-            log_df.to_csv(LOG_FILE, index=False, encoding="utf-8-sig")
 
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            # 저장 경로를 xlsx로 변경
+            LOG_XLSX = os.path.join(OUTPUT_DIR, f"html_log_{LOG_TIMESTAMP}.xlsx")
+            save_excel_autowidth(log_df, LOG_XLSX)
 
             mono_df = log_df[log_df["시트명"].str.contains("단색", na=False)]
             spot_df = log_df[log_df["시트명"].str.contains("별색", na=False)]
@@ -311,22 +332,19 @@ if __name__ == "__main__":
             ]
 
             if not mono_df.empty:
-                mono_df.to_csv(os.path.join(OUTPUT_DIR, f"log_mono_{timestamp}.csv"),
-                               index=False, encoding="utf-8-sig")
+                save_excel_autowidth(mono_df, os.path.join(OUTPUT_DIR, f"log_mono_{LOG_TIMESTAMP}.xlsx"))
 
             if not spot_df.empty:
-                spot_df.to_csv(os.path.join(OUTPUT_DIR, f"log_spot_{timestamp}.csv"),
-                               index=False, encoding="utf-8-sig")
+                save_excel_autowidth(spot_df, os.path.join(OUTPUT_DIR, f"log_spot_{LOG_TIMESTAMP}.xlsx"))
 
             if not normal_df.empty:
-                normal_df.to_csv(os.path.join(OUTPUT_DIR, f"log_normal_{timestamp}.csv"),
-                                 index=False, encoding="utf-8-sig")
+                save_excel_autowidth(normal_df, os.path.join(OUTPUT_DIR, f"log_normal_{LOG_TIMESTAMP}.xlsx"))
 
         generate_combined_html(OUTPUT_DIR)
 
         # ZIP 압축 생성
         downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
-        zip_filename = f"husk_guide_output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
+        zip_filename = f"husk_guide_output_{LOG_TIMESTAMP}.zip"
         zip_path_base = os.path.join(downloads_path, zip_filename).replace(".zip", "")
 
         shutil.make_archive(
