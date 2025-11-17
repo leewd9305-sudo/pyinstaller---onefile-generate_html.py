@@ -7,8 +7,9 @@ import shutil
 from tkinter import Tk, filedialog, messagebox
 import unicodedata
 
+
 # ==============================
-# 🧭 PyInstaller 경로 보정
+# 🧭 PyInstaller 경로 인식
 # ==============================
 def resource_path(relative_path):
     if hasattr(sys, "_MEIPASS"):
@@ -19,26 +20,26 @@ def resource_path(relative_path):
 
 
 # ==============================
-# 📌 엑셀 파일 선택
+# 📂 엑셀 파일 선택
 # ==============================
 def select_excel_file():
     root = Tk()
     root.withdraw()
 
     file_path = filedialog.askopenfilename(
-        title="제작가이드 엑셀 파일을 선택하세요",
+        title="제작가이드 엑셀 파일 선택",
         filetypes=[("Excel Files", "*.xlsx *.xls")]
     )
 
     if not file_path:
         raise FileNotFoundError("엑셀 파일이 선택되지 않았습니다!")
 
-    print(f"\n📌 선택된 엑셀 파일: {file_path}")
+    print(f"\n📌 선택된 파일: {file_path}")
     return file_path
 
 
 # ==============================
-# 🛠️ 파일명 정리
+# 🔒 파일명 정리
 # ==============================
 def sanitize_filename(name: str) -> str:
     name = re.sub(r'[<>:"/\\|?*]', "_", str(name))
@@ -46,20 +47,19 @@ def sanitize_filename(name: str) -> str:
 
 
 # ==============================
-# 🧩 시트별 HTML → TXT 생성
+# 📄 시트 → TXT(HTML) 변환
 # ==============================
 def generate_html_for_sheet(excel_file_path: str, sheet_name: str, output_dir: str, log_records: list):
 
     BLOB_BASE_URL = "https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page"
     TOOLTIP_BASE_URL = "https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/test"
 
-    print(f"\n🚀 [{sheet_name}] 처리 시작")
+    print(f"\n🚀 [{sheet_name}] 변환 시작")
 
     folder_name = sheet_name.replace("☆", "").strip()
     sheet_output_dir = os.path.join(output_dir, folder_name)
     os.makedirs(sheet_output_dir, exist_ok=True)
 
-    # 엑셀 읽기
     try:
         df = pd.read_excel(excel_file_path, sheet_name=sheet_name, header=None, dtype=str)
         df = df.fillna("")
@@ -67,7 +67,6 @@ def generate_html_for_sheet(excel_file_path: str, sheet_name: str, output_dir: s
         print(f"⚠️ 시트 '{sheet_name}' 로드 실패: {e}")
         return
 
-    # 앞 2줄 제거
     df = df.iloc[2:].copy()
     df = df[df[1] != ""].copy()
 
@@ -100,29 +99,34 @@ def generate_html_for_sheet(excel_file_path: str, sheet_name: str, output_dir: s
         safe_name = sanitize_filename(product_name)
         output_path = os.path.join(sheet_output_dir, f"{seq_str}_{safe_name}.txt")
 
-        # 배경 → border, 간격 보정 (h2 + 이미지)
+        # ==========================================
+        # ✨ 수정된 핵심
+        # 툴팁 위치를 박스 안쪽(top:15px)
+        # 제목 간격 margin-top:75px
+        # ==========================================
         html = f"""
         <div style="width:100%; max-width:720px; margin:0 auto; padding:0 16px;
-        display:flex; flex-direction:column; align-items:center; gap:20px;
-        position:relative; box-sizing:border-box; text-align:center;">
+        display:flex; flex-direction:column; align-items:center; gap:20px;">
 
-            <div style="border:4px solid #4DA3FF; border-radius:12px; box-sizing:border-box;
-                width:100%; height:fit-content; display:flex; flex-direction:column;
-                align-items:center; padding-bottom:30px; position:relative; background-color:transparent;">
+            <div style="border:4px solid #4DA3FF; border-radius:12px; width:100%;
+                display:flex; flex-direction:column; align-items:center;
+                padding-bottom:30px; position:relative;">
 
-                <img src="{TOOLTIP_BASE_URL}/단색_툴팁.png" alt="단색 제작가이드"
-                    style="position:absolute; top:0; left:50%; transform:translateX(-50%);
+                <img src="{TOOLTIP_BASE_URL}/단색_툴팁.png"
+                    alt="단색 제작가이드"
+                    style="position:absolute; top:15px; left:50%; transform:translateX(-50%);
                     width:130px; height:auto; z-index:10;">
 
-                <h2 style="margin-top:120px; font-size:20px; font-weight:600;">{product_name}</h2>
+                <h2 style="margin-top:75px; margin-bottom:30px;
+                    font-size:20px; font-weight:600;">{product_name}</h2>
         """
 
         for i, file_name in enumerate(image_files, start=1):
             html += f"""
-                <div style="margin-top:{25 if i == 1 else 20}px;">
+                <div style="margin-top:30px;">
                     <img src="{BLOB_BASE_URL}/{file_name}?ver={i}"
-                        alt="{product_name} 이미지 {i}"
-                        style="width:100%; max-width:450px;" class="e-rte-image e-imginline">
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
                 </div>
             """
 
@@ -145,67 +149,65 @@ def generate_html_for_sheet(excel_file_path: str, sheet_name: str, output_dir: s
 
         print(f"✅ [{seq_str}] {product_name} → {output_path}")
 
-    print(f"🎉 [{sheet_name}] TXT 생성 완료!")
-
 
 # ==============================
-# 🌈 병합 기능 — 안정화 + 좌우배치 복구
+# 🔍 단색 TXT → 콘텐츠 추출
 # ==============================
 def _extract_mono_content(html_path: str):
-    """단색 TXT 파일에서 제품명과 이미지 콘텐츠를 안정적으로 추출"""
 
     with open(html_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # 제품명
     product_match = re.search(r'<h2[^>]*>(.*?)</h2>', content)
     product_name = product_match.group(1).strip() if product_match else ""
 
-    # h2 이후 전체 div 영역 안정적으로 추출
     image_match = re.search(r'</h2[^>]*>([\s\S]*?)</div>\s*</div>\s*$', content)
     image_content = image_match.group(1).strip() if image_match else ""
-
-    # 간격 보정
-    image_content = image_content.replace("margin-top:55px", "margin-top:25px")
-    image_content = image_content.replace("margin-top:30px", "margin-top:20px")
 
     return product_name, image_content
 
 
+# ==============================
+# 🧱 단색/별색 공통 블록 생성
+# ==============================
 def _build_combined_block(product_name, image_content, tooltip_filename, tooltip_alt, border_color):
 
     TOOLTIP_BASE_URL = "https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/test"
 
     return f"""
-    <div style="flex:1; text-align:center; position:relative; overflow:visible;
-        display:flex; flex-direction:column; align-items:center;">
+    <div style="flex:1; text-align:center; display:flex;
+        flex-direction:column; align-items:center;">
 
-        <div style="border:4px solid {border_color}; border-radius:12px; box-sizing:border-box;
-            width:100%; height:fit-content; display:flex; flex-direction:column;
-            align-items:center; padding-bottom:30px; position:relative; background-color:transparent;">
+        <div style="border:4px solid {border_color}; border-radius:12px;
+            width:100%; padding-bottom:30px; position:relative;">
 
-            <img src="{TOOLTIP_BASE_URL}/{tooltip_filename}" alt="{tooltip_alt}"
-                style="position:absolute; top:0; left:50%; transform:translateX(-50%);
+            <img src="{TOOLTIP_BASE_URL}/{tooltip_filename}"
+                alt="{tooltip_alt}"
+                style="position:absolute; top:15px; left:50%; transform:translateX(-50%);
                 width:130px; height:auto; z-index:10;">
 
-            <h2 style="margin-top:120px; font-size:20px; font-weight:600;">{product_name}</h2>
+            <h2 style="margin-top:75px; margin-bottom:30px;
+                font-size:20px; font-weight:600;">{product_name}</h2>
 
             {image_content}
+
         </div>
     </div>
     """
 
 
+# ==============================
+# 🔗 단색 + 별색 병합 페이지 생성
+# ==============================
 def generate_combined_html(output_dir):
 
     mono_dir = os.path.join(output_dir, "파일명 리스트(단색)")
     spot_dir = os.path.join(output_dir, "파일명 리스트(별색)")
     combined_dir = os.path.join(output_dir, "combined")
-
     os.makedirs(combined_dir, exist_ok=True)
 
     if not os.path.exists(mono_dir) or not os.path.exists(spot_dir):
-        print("⚠️ 병합 건너뜀 — 단색/별색 폴더 없음")
+        print("⚠️ 병합 불가 — 단색/별색 폴더 없음")
         return
 
     mono_files = sorted(
@@ -232,24 +234,31 @@ def generate_combined_html(output_dir):
         mono_path = os.path.join(mono_dir, mono_file)
         product_name, image_content = _extract_mono_content(mono_path)
 
-        left_block = _build_combined_block(product_name, image_content, "단색_툴팁.png", "단색 제작가이드", "#4DA3FF")
-        right_block = _build_combined_block(product_name, image_content, "별색_툴팁.png", "별색 제작가이드", "#24CF7F")
+        left_block = _build_combined_block(
+            product_name, image_content,
+            "단색_툴팁.png", "단색 제작가이드", "#4DA3FF"
+        )
+
+        right_block = _build_combined_block(
+            product_name, image_content,
+            "별색_툴팁.png", "별색 제작가이드", "#24CF7F"
+        )
 
         final_html = f"""
         <div style="width:100%; max-width:1420px; margin:0 auto; padding:0 16px;
-        display:flex; justify-content:space-between; gap:30px;
-        position:relative; box-sizing:border-box;">
+        display:flex; justify-content:space-between; gap:30px; position:relative;">
 
             {left_block}
 
             <div style="position:absolute; top:0; left:50%; transform:translateX(-50%);
-                width:1px; height:100%; background-color:#dcdcdc;"></div>
+                width:1px; height:100%; background:#dcdcdc;"></div>
 
             {right_block}
         </div>
         """
 
         output_path = os.path.join(combined_dir, f"{seq}_{sanitize_filename(product)}.txt")
+
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(final_html)
 
@@ -259,7 +268,7 @@ def generate_combined_html(output_dir):
 
 
 # ==============================
-# 🚀 전체 실행
+# 🏁 메인 실행부
 # ==============================
 if __name__ == "__main__":
 
@@ -276,6 +285,7 @@ if __name__ == "__main__":
     )
 
     try:
+
         log_records = []
 
         excel_sheets = pd.ExcelFile(EXCEL_FILE)
@@ -283,14 +293,10 @@ if __name__ == "__main__":
 
         valid_sheets = [s.strip() for s in all_sheets if "파일명 리스트" in s]
 
-        print(f"📄 감지된 시트: {valid_sheets}")
-
         for sheet in valid_sheets:
             generate_html_for_sheet(EXCEL_FILE, sheet, OUTPUT_DIR, log_records)
 
-        # ----------------------------
-        # 로그 저장 + 분할 저장
-        # ----------------------------
+        # 로그 생성
         if log_records:
             log_df = pd.DataFrame(log_records)
             log_df.to_csv(LOG_FILE, index=False, encoding="utf-8-sig")
@@ -316,10 +322,9 @@ if __name__ == "__main__":
                 normal_df.to_csv(os.path.join(OUTPUT_DIR, f"log_normal_{timestamp}.csv"),
                                  index=False, encoding="utf-8-sig")
 
-        # 병합 실행
         generate_combined_html(OUTPUT_DIR)
 
-        # ZIP 생성
+        # ZIP 압축 생성
         downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
         zip_filename = f"husk_guide_output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
         zip_path_base = os.path.join(downloads_path, zip_filename).replace(".zip", "")
@@ -329,8 +334,6 @@ if __name__ == "__main__":
             format="zip",
             root_dir=OUTPUT_DIR
         )
-
-        print(f"\n📦 ZIP 생성 → {zip_path_base}.zip")
 
         messagebox.showinfo(
             "완료",
