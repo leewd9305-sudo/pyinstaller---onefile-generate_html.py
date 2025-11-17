@@ -1,0 +1,79 @@
+
+        <div style="width:100%; max-width:720px; margin:0 auto; padding:0 16px;
+        display:flex; flex-direction:column; align-items:center; gap:20px;">
+
+            <div style="border:4px solid #24CF7F; border-radius:12px; width:100%;
+                display:flex; flex-direction:column; align-items:center;
+                padding-bottom:30px; position:relative;">
+
+                <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/test/별색_툴팁.png"
+                    alt="별색 제작가이드"
+                    style="position:absolute; top:15px; left:50%; transform:translateX(-50%);
+                    width:130px; height:auto; z-index:10;">
+
+                <h2 style="margin-top:75px; margin-bottom:30px;
+                    font-size:20px; font-weight:600;">에폭시 범퍼케이스</h2>
+        
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/00_A.jpg?ver=1"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/01_F.jpg?ver=2"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/02_E.jpg?ver=3"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/03_A.jpg?ver=4"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/04_A.jpg?ver=5"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/05_A.jpg?ver=6"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/20_B.jpg?ver=7"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/21_B.jpg?ver=8"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/33_E_spot.jpg?ver=9"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/34_A.jpg?ver=10"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+            </div>
+        </div>
+        

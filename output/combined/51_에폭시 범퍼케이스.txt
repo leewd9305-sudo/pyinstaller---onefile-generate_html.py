@@ -100,13 +100,13 @@
                 </div>
             
                 <div style="margin-top:30px;">
-                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/01_D.jpg?ver=2"
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/01_F.jpg?ver=2"
                         style="width:100%; max-width:450px;"
                         class="e-rte-image e-imginline">
                 </div>
             
                 <div style="margin-top:30px;">
-                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/02_K.jpg?ver=3"
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/02_E.jpg?ver=3"
                         style="width:100%; max-width:450px;"
                         class="e-rte-image e-imginline">
                 </div>
@@ -130,19 +130,25 @@
                 </div>
             
                 <div style="margin-top:30px;">
-                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/20_A.jpg?ver=7"
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/20_B.jpg?ver=7"
                         style="width:100%; max-width:450px;"
                         class="e-rte-image e-imginline">
                 </div>
             
                 <div style="margin-top:30px;">
-                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/33_F.jpg?ver=8"
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/21_B.jpg?ver=8"
                         style="width:100%; max-width:450px;"
                         class="e-rte-image e-imginline">
                 </div>
             
                 <div style="margin-top:30px;">
-                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/34_A.jpg?ver=9"
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/33_E_spot.jpg?ver=9"
+                        style="width:100%; max-width:450px;"
+                        class="e-rte-image e-imginline">
+                </div>
+            
+                <div style="margin-top:30px;">
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/34_A.jpg?ver=10"
                         style="width:100%; max-width:450px;"
                         class="e-rte-image e-imginline">
                 </div>

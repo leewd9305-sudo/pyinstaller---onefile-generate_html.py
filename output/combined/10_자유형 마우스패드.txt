@@ -184,7 +184,7 @@
                 </div>
             
                 <div style="margin-top:30px;">
-                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/33_A.jpg?ver=12"
+                    <img src="https://huskb2bstorage.blob.core.windows.net/shopicus/dev_1/guide/03_make/page/33_A_spot.jpg?ver=12"
                         style="width:100%; max-width:450px;"
                         class="e-rte-image e-imginline">
                 </div>
