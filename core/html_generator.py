@@ -13,20 +13,39 @@ def generate_html_for_sheet(excel_path, sheet_name, output_dir, log_records):
 
     sheet_title = sheet_name.replace("☆", "").strip()
 
+    # -----------------------------
+    # 🔥 폴더명(original_mode)과 UI 스킨(mode) 분리
+    # -----------------------------
     if "단색" in sheet_title:
-        mode = "단색"
+        original_mode = "단색"
     elif "별색" in sheet_title:
-        mode = "별색"
+        original_mode = "별색"
+    elif "일반" in sheet_title:
+        original_mode = "일반"
     else:
-        mode = "일반"
+        original_mode = "일반"
+
+    # UI 스킨: 일반은 단색처럼 출력
+    if original_mode == "단색":
+        mode = "단색"
+    elif original_mode == "별색":
+        mode = "별색"
+    elif original_mode == "일반":
+        mode = "단색"   # ⭐ 일반 → 단색 스킨 강제
 
     tooltip_filename = TOOLTIP_MAP[mode]
     tooltip_alt = TOOLTIP_ALT_MAP[mode]
     border_color = COLOR_MAP[mode]
 
-    sheet_output_dir = os.path.join(output_dir, mode)
+    # -----------------------------
+    # 🔥 폴더 구조는 원래 모드 기준 유지
+    # -----------------------------
+    sheet_output_dir = os.path.join(output_dir, original_mode)
     os.makedirs(sheet_output_dir, exist_ok=True)
 
+    # -----------------------------
+    # 이하 기존 HTML 생성 로직 동일
+    # -----------------------------
     df = pd.read_excel(excel_path, sheet_name=sheet_name, header=None, dtype=str)
     df = df.fillna("")
     df = df.iloc[2:].copy()
